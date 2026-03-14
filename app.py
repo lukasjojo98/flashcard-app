@@ -243,8 +243,8 @@ def add_card(deck_id: int) -> any:
         question_image = request.files.get("question-image")
         answer_image = request.files.get("answer-image")
 
-        a_path = ""
-        q_path = ""
+        a_filename = ""
+        q_filename = ""
 
         if question_image and question_image.filename:
             q_filename = secure_filename(question_image.filename)
