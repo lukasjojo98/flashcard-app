@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Deck
+{% endblock %}
+
+{% block main %}
+    <div class="auth-card">
+        <h2 class="auth-title">Add Card</h2>
+        <form action="/decks/{{deck_id}}/add" method="post" class="auth-form">
+            <input autocomplete="off" autofocus class="auth-input" id="question" name="question" placeholder="Question" type="text">
+            <input class="auth-input" id="answer" name="answer" placeholder="Answer" type="text">
+            <button class="auth-btn" type="submit">Add Card</button>
+        </form>
+    </div>
+{% endblock %}

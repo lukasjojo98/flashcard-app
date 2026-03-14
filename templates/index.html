@@ -1,0 +1,18 @@
+{%extends "layout.html"%}
+
+{% block main %}
+    <div class="deck-list">
+        {%for deck in decks%}
+            <div class="deck-item">
+                <div class="subitem">
+                    <a href="/study/{{deck[0]}}">{{deck[2]}}</a>
+                </div>
+                <div class="subitem">
+                    <p>Cards: {{deck[3]}}</p>
+                    <button class="btn">
+                        <a href="/decks/{{deck[0]}}/add">Add Cards</a>
+                    </button>
+                </div>
+            </div>
+        {%endfor%}
+{% endblock %}
