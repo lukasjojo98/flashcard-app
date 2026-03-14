@@ -52,8 +52,8 @@ if [ -f "$DECKS_DB_FILE" ]; then
 else
     echo "📦 Erstelle $DECKS_DB_FILE mit eingebettetem Schema..."
     sqlite3 "$DECKS_DB_FILE" <<EOF
-CREATE TABLE decks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id int, name TEXT NOT NULL, cards int);
-CREATE TABLE cards (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id int, deck_id int, question TEXT NOT NULL, answer TEXT NOT NULL, four_score int);
+    CREATE TABLE decks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id int, name TEXT NOT NULL, cards int);
+    CREATE TABLE cards (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id int, deck_id int, question TEXT NOT NULL, answer TEXT NOT NULL, four_score int, question_image_path TEXT, answer_image_path TEXT);
 EOF
 
     if [ $? -eq 0 ]; then
