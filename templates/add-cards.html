@@ -7,10 +7,21 @@
 {% block main %}
     <div class="auth-card">
         <h2 class="auth-title">Add Card</h2>
-        <form action="/decks/{{deck_id}}/add" method="post" class="auth-form">
+        <form action="/decks/{{deck_id}}/add" method="post" enctype="multipart/form-data" class="auth-form">
             <input autocomplete="off" autofocus class="auth-input" id="question" name="question" placeholder="Question" type="text">
+            <div class="card-image-container">
+                <label for="image">Image for question:</label>
+                <input type="file" name="question-image" src="" alt="Image for question">
+            </div>
             <input class="auth-input" id="answer" name="answer" placeholder="Answer" type="text">
+            <div class="card-image-container">
+                <label for="image">Image for answer:</label>
+                <input type="file" name="answer-image" src="" alt="Image for answer">
+            </div>
             <button class="auth-btn" type="submit">Add Card</button>
         </form>
     </div>
+    <script>
+
+    </script>
 {% endblock %}

@@ -3,7 +3,17 @@
 {% block main %}
 <div class="study-container">
     <div class="question" id="question">{{ question }}</div>
+        <div class="question-image" id="question-image">
+            {% if question_image %}
+                <img src="{{ url_for('static', filename='uploads/' ~ question_image) }}" alt="Question Image" style="max-width: 100%; height: auto;">
+            {% endif %}
+        </div>
     <div class="answer" id="answer" style="display: none;">{{ answer }}</div>
+    <div class="answer-image" id="answer-image" style="display: none;">
+            {% if answer_image %}
+                <img src="{{ url_for('static', filename='uploads/' ~ answer_image) }}" alt="Answer Image" style="max-width: 100%; height: auto;">
+            {% endif %}
+        </div>
     <div id="card-id" style="display: none;">{{ card_id }}</div>
     <div class="button-container">
         <button class="btn" id="reveal-btn">Reveal Answer</button>
@@ -22,6 +32,7 @@
         document.getElementById('answer').style.display = 'block';
         this.style.display = 'none';
         document.getElementById('score-buttons').style.display = 'block';
+        document.getElementById('answer-image').style.display = 'block';
     });
 
     document.getElementById('next-btn').addEventListener('click', function() {

@@ -3,6 +3,7 @@ from typing import Final
 from flask import Flask, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 from sqlite3 import Error
 from helpers import apology
 from os import path
@@ -19,6 +20,9 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path, "static", "uploads")
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MiB
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 Session(app)
 
 
@@ -160,6 +164,7 @@ def study(deck_id: int) -> str:
 
     try:
         card_content = get_card_or_default(user_id, deck_id)
+        print(card_content)
     except Error as e:
         print(e)
         return redirect("/login")
@@ -172,6 +177,8 @@ def study(deck_id: int) -> str:
         card_id=card_content[0],
         question=card_content[3],
         answer=card_content[4],
+        question_image=card_content[6],
+        answer_image=card_content[7]
     )
 
 
@@ -233,15 +240,32 @@ def add_card(deck_id: int) -> any:
     if request.method == "POST":
         question = request.form.get("question")
         answer = request.form.get("answer")
-        tags = request.form.get("tags")
+        question_image = request.files.get("question-image")
+        answer_image = request.files.get("answer-image")
+
+        a_path = ""
+        q_path = ""
+
+        if question_image and question_image.filename:
+            q_filename = secure_filename(question_image.filename)
+            q_path = os.path.join(app.config["UPLOAD_FOLDER"], q_filename)
+            question_image.save(q_path)
+
+        if answer_image and answer_image.filename:
+            a_filename = secure_filename(answer_image.filename)
+            a_path = os.path.join(app.config["UPLOAD_FOLDER"], a_filename)
+            answer_image.save(a_path)
+
+        print("question_image", question_image)
+        print("answer_image", answer_image)
 
         try:
             ROOT = path.dirname(path.realpath(__file__))
             conn = sqlite3.connect(path.join(ROOT, "decks.db"))
             db = conn.cursor()
             db.execute(
-                "INSERT INTO cards (user_id, deck_id, question, answer, four_score) VALUES (?, ?, ?, ?, 0)",
-                [user_id, deck_id, question, answer],
+                "INSERT INTO cards (user_id, deck_id, question, answer, four_score, question_image_path, answer_image_path) VALUES (?, ?, ?, ?, 0, ?, ?)",
+                [user_id, deck_id, question, answer, q_filename, a_filename],
             )
             conn.commit()
             db.execute(
