@@ -71,6 +71,6 @@ docker build -t flashcard-app .
 
 # --- Docker Container starten ---
 echo "🚀 Starte Container auf Port $USER_PORT ..."
-docker run -p $USER_PORT:5000 \
+docker run -d -p $USER_PORT:5000 \
   -v "$(pwd)/users.db:/app/users.db" \
   flashcard-app
