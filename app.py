@@ -178,7 +178,7 @@ def study(deck_id: int) -> str:
         question=card_content[3],
         answer=card_content[4],
         question_image=card_content[6],
-        answer_image=card_content[7]
+        answer_image=card_content[7],
     )
 
 
